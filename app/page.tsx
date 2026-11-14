@@ -35,6 +35,10 @@ export default function Home() {
         </div>
 
         <CalculatorForm onSave={handleSave} />
+        
+        <footer className="text-center text-slate-400 text-xs mt-10">
+          © {new Date().getFullYear()} Created by Golden Chandra
+        </footer>
       </div>
     </main>
   );
