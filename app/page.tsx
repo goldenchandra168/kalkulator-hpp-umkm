@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { LogIn, User, Plus, Search, Trash2, Edit2, Copy, Download } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -45,9 +46,9 @@ export default function Home() {
             <button onClick={() => supabase.auth.signOut()} className="text-red-500 text-sm">Logout</button>
           </div>
         ) : (
-          <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
+          <Link href="/auth" className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
             <LogIn size={16} /> Login
-          </button>
+          </Link>
         )}
       </header>
 
