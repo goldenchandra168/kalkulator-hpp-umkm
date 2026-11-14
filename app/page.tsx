@@ -24,13 +24,14 @@ export default function Home() {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (indexOrId: any) => {
     if (!confirm("Yakin ingin menghapus produk ini?")) return;
 
     if (user) {
-      await supabase.from('products').delete().eq('id', id);
+      await supabase.from('products').delete().eq('id', indexOrId);
     } else {
-      const updated = produkList.filter((p: any) => p.id !== id);
+      const updated = produkList.filter((_, idx) => (produkList[idx].id ? produkList[idx].id !== indexOrId : idx !== indexOrId));
+      setProdukList(updated);
       localStorage.setItem('produk_umkm', JSON.stringify(updated));
     }
     fetchProducts(user?.id);
@@ -63,8 +64,8 @@ export default function Home() {
             <h2 className="font-bold">Database Produk</h2>
             <button className="flex items-center gap-2 text-sm bg-green-600 text-white px-3 py-1 rounded"><Plus size={16}/> Baru</button>
         </div>
-        {produkList.map((p) => (
-          <div key={p.id} className="border-b py-3 flex justify-between items-center">
+        {produkList.map((p, index) => (
+          <div key={p.id || index} className="border-b py-3 flex justify-between items-center">
             <span>{p.nama}</span>
             <div className="flex gap-2">
                 <a 
@@ -76,7 +77,7 @@ export default function Home() {
                 >
                   <Download size={16}/>
                 </a>
-                <button onClick={() => handleDelete(p.id)} className="text-red-500 hover:text-red-700">
+                <button onClick={() => handleDelete(p.id || index)} className="text-red-500 hover:text-red-700">
                   <Trash2 size={16}/>
                 </button>
             </div>
