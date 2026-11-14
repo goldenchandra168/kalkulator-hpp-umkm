@@ -64,25 +64,33 @@ export default function Home() {
             <h2 className="font-bold">Database Produk</h2>
             <button className="flex items-center gap-2 text-sm bg-green-600 text-white px-3 py-1 rounded"><Plus size={16}/> Baru</button>
         </div>
-        {produkList.map((p, index) => (
-          <div key={p.id || index} className="border-b py-3 flex justify-between items-center">
-            <span>{p.nama}</span>
-            <div className="flex gap-2">
-                <a 
-                  href="https://invoice-app-two-delta.vercel.app/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-green-600 hover:text-green-800"
-                  title="Buat Invoice"
-                >
-                  <Download size={16}/>
-                </a>
-                <button onClick={() => handleDelete(p.id || index)} className="text-red-500 hover:text-red-700">
-                  <Trash2 size={16}/>
-                </button>
+        {produkList.length > 0 ? (
+          produkList.map((p, index) => (
+            <div key={p.id || index} className="border-b py-3 flex justify-between items-center bg-white px-2">
+              <span className="font-medium text-slate-700">{p.nama || "Produk Tanpa Nama"}</span>
+              <div className="flex gap-4">
+                  <a 
+                    href="https://invoice-app-two-delta.vercel.app/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-green-600 hover:text-green-800 transition-colors"
+                    title="Buat Invoice"
+                  >
+                    <Download size={20}/>
+                  </a>
+                  <button 
+                    onClick={() => handleDelete(p.id || index)} 
+                    className="text-red-500 hover:text-red-700 transition-colors"
+                    title="Hapus Produk"
+                  >
+                    <Trash2 size={20}/>
+                  </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-center text-slate-400 py-4">Belum ada produk. Silakan tambah produk baru.</p>
+        )}
       </div>
 
       <footer className="text-center text-slate-400 text-xs mt-10">
