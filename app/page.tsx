@@ -24,16 +24,16 @@ export default function Home() {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
-  const fetchProducts = async (userId?: string) => {
-    setLoading(true);
-    if (userId) {
-      const { data } = await supabase.from('products').select('*').eq('user_id', userId);
-      setProdukList(data || []);
+  const handleDelete = async (id: string) => {
+    if (!confirm("Yakin ingin menghapus produk ini?")) return;
+
+    if (user) {
+      await supabase.from('products').delete().eq('id', id);
     } else {
-      const local = localStorage.getItem('produk_umkm');
-      setProdukList(local ? JSON.parse(local) : []);
+      const updated = produkList.filter((p: any) => p.id !== id);
+      localStorage.setItem('produk_umkm', JSON.stringify(updated));
     }
-    setLoading(false);
+    fetchProducts(user?.id);
   };
 
   return (
@@ -64,11 +64,21 @@ export default function Home() {
             <button className="flex items-center gap-2 text-sm bg-green-600 text-white px-3 py-1 rounded"><Plus size={16}/> Baru</button>
         </div>
         {produkList.map((p) => (
-          <div key={p.id} className="border-b py-3 flex justify-between">
+          <div key={p.id} className="border-b py-3 flex justify-between items-center">
             <span>{p.nama}</span>
             <div className="flex gap-2">
-                <button className="text-blue-500"><Edit2 size={16}/></button>
-                <button className="text-red-500"><Trash2 size={16}/></button>
+                <a 
+                  href="https://invoice-app-two-delta.vercel.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:text-green-800"
+                  title="Buat Invoice"
+                >
+                  <Download size={16}/>
+                </a>
+                <button onClick={() => handleDelete(p.id)} className="text-red-500 hover:text-red-700">
+                  <Trash2 size={16}/>
+                </button>
             </div>
           </div>
         ))}
