@@ -4,8 +4,10 @@ import CalculatorForm from '@/components/CalculatorForm';
 
 export default function Home() {
   const [produkList, setProdukList] = useState([]);
+  const [year, setYear] = useState<number | null>(null);
 
   useEffect(() => {
+    setYear(new Date().getFullYear());
     const saved = localStorage.getItem('produk_umkm');
     if (saved) setProdukList(JSON.parse(saved));
   }, []);
@@ -37,7 +39,7 @@ export default function Home() {
         <CalculatorForm onSave={handleSave} />
         
         <footer className="text-center text-slate-400 text-xs mt-10">
-          © {new Date().getFullYear()} Created by Golden Chandra
+          © {year ?? ""} Created by Golden Chandra
         </footer>
       </div>
     </main>
