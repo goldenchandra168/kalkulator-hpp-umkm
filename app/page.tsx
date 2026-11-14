@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import CalculatorForm from '@/components/CalculatorForm';
 
 export default function Home() {
-  const [produkList, setProdukList] = useState([]);
+  const [produkList, setProdukList] = useState<any[]>([]);
   const [year, setYear] = useState<number | null>(null);
 
   useEffect(() => {
